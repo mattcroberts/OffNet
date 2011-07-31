@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>OffNet</groupId>
+  <artifactId>OffNet</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+	<dependency>
+	    <groupId>org.ccil.cowan.tagsoup</groupId>
+	    <artifactId>tagsoup</artifactId>
+	    <version>1.2</version>
+	</dependency>
+  	<dependency>
+  		<groupId>org.scribe</groupId>
+  		<artifactId>scribe</artifactId>
+  		<version>1.2.1</version>
+  		<optional>false</optional>
+  	</dependency>
+  	 <!--  Gson: Java to Json conversion -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>1.7.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>
