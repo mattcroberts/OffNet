@@ -80,10 +80,10 @@ public abstract class Resource {
 		ByteArrayOutputStream os = null;
 		try {
 
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			/*HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			for(String header :con.getHeaderFields().keySet()){
 				System.out.println(header + ":"+ con.getHeaderField(header));
-			}
+			}*/
 			in = url.openStream();
 			
 			BufferedInputStream bis = new BufferedInputStream(in);

@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -30,13 +29,29 @@ public class Main implements PersistablePropertyHolder {
 			System.setProperty(name, value);
 		}
 		
-		/*Resource r = new WebResource("http://www.engadget.com/");
+		String url = "http://www.engadget.com/";
+		//singleUrlTest(url);
+
+		twitterTest();
+		
+		String props[] = Arrays.copyOf(persistableProperties, persistableProperties.length + Twitter.persistableProperties.length);
+		System.arraycopy(Twitter.persistableProperties, 0, props, persistableProperties.length, Twitter.persistableProperties.length);
+		persistProperties(props);
+		
+		
+	}
+
+	private static void singleUrlTest(String url) {
+		Resource r = new WebResource(url);
 
 		try {
 			r.persist();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
+	}
+
+	private static void twitterTest() {
 		
 		Twitter twitter = new Twitter();
 		
@@ -64,12 +79,6 @@ public class Main implements PersistablePropertyHolder {
 			}
 			
 		}
-		
-		String props[] = Arrays.copyOf(persistableProperties, persistableProperties.length + Twitter.persistableProperties.length);
-		System.arraycopy(Twitter.persistableProperties, 0, props, persistableProperties.length, Twitter.persistableProperties.length);
-		persistProperties(props);
-		
-		
 	}
 	
 	public static void persistProperties(String propertyNames[]) throws IOException{

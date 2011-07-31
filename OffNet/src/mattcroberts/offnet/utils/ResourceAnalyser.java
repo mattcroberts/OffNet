@@ -1,7 +1,6 @@
 package mattcroberts.offnet.utils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -9,14 +8,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.ccil.cowan.tagsoup.HTMLScanner;
-import org.xml.sax.SAXException;
-
-import sun.awt.image.ByteArrayImageSource;
-
 import mattcroberts.offnet.resources.ImageResource;
 import mattcroberts.offnet.resources.Resource;
 import mattcroberts.offnet.resources.WebResource;
+
+import org.xml.sax.SAXException;
 
 
 
