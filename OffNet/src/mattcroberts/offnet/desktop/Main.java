@@ -29,8 +29,8 @@ public class Main implements PersistablePropertyHolder {
 			System.setProperty(name, value);
 		}
 		
-		String url = "http://www.engadget.com/";
-		//singleUrlTest(url);
+		String url = "http://www.vyre.com/";
+		singleUrlTest(url);
 
 		twitterTest();
 		

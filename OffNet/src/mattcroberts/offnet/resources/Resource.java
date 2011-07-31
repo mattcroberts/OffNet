@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -67,7 +66,7 @@ public abstract class Resource {
 	private byte[] fetchAsBinary() {
 		URL url;
 		try {
-			url = new URL(this.url);
+			url = new URL(this.getUrl());
 			url.toURI();
 		} catch (MalformedURLException e1) {
 			return null;
@@ -110,6 +109,7 @@ public abstract class Resource {
 	}
 
 	protected String fetchAsString() throws IOException {
+		System.err.println(this.getUrl());
 		String text = new String(this.fetchAsBinary());
 		
 		return text;
@@ -129,9 +129,16 @@ public abstract class Resource {
 
 	protected String getPrettyUrl(String url) {
 		url = url.split("\\?")[0];
-		int start = url.indexOf("://") + 3;
+		
+		int start = 0;
+		if(url.contains("://")){
+			start = url.indexOf("://") + 3;
+		}else if(url.startsWith("/")){
+			start = 1;
+		}
+		
 		int end = url.lastIndexOf("/");
-		if(end < 1){
+		if(end <= start){
 			end = url.length();
 		}
 		return url.substring(start,end);
@@ -146,6 +153,15 @@ public abstract class Resource {
 	}
 
 	public String getUrl() {
+		
+		if(this.url.startsWith("/") && this.parent != null){
+			try {
+				URL parent = new URL(this.parent.getUrl());
+				return parent.getProtocol() + "://" + parent.getHost() + this.url;
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
 		return url;
 	}
 	
@@ -183,7 +199,7 @@ public abstract class Resource {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		result = prime * result + ((getUrl() == null) ? 0 : getUrl().hashCode());
 		return result;
 	}
 
@@ -196,10 +212,10 @@ public abstract class Resource {
 		if (getClass().getSuperclass() != obj.getClass().getSuperclass()) 
 			return false;
 		Resource other = (Resource) obj;
-		if (url == null) {
-			if (other.url != null)
+		if (getUrl() == null) {
+			if (other.getUrl() != null)
 				return false;
-		} else if (!url.equals(other.url))
+		} else if (!getUrl().equals(other.getUrl()))
 			return false;
 		return true;
 	}
@@ -243,12 +259,6 @@ public abstract class Resource {
 
 	public void addSubResoure(Resource subResource) {
 		this.subResources.add(subResource);
-	}
-
-	public String getShortPath() throws MalformedURLException {
-		
-		
-		return this.getPrettyUrl(this.url) + "/" + this.getName();
 	}
 
 	public String getFileExtension() {
