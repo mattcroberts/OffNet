@@ -53,7 +53,7 @@ public class ResourceAnalyser {
 			if(isValidPath(src)){
 				Resource ir = new ImageResource(src,resource);
 				
-				resource.addSubResoure(ir);
+				resource.addSubResource(ir);
 			}
 		}
 		

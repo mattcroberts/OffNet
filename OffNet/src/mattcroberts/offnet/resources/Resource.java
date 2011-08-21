@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -37,8 +38,11 @@ public abstract class Resource {
 	}
 
 	public Resource(String url, Resource parent){
-		this(url);
+		this.subResources = new ArrayList<Resource>();
 		this.parent = parent;
+		this.url = url;
+		this.name = extractName(url);
+		this.resourcePath = DATA_DIR + "/" + this.getPrettyUrl(this.url) + "/" + this.getName();
 	}
 
 	protected void analyse(){
@@ -63,7 +67,13 @@ public abstract class Resource {
 		}
 	}
 
+	private void updateUrl(String urlString){
+		this.url = urlString;
+		this.name = extractName(urlString);
+		this.resourcePath = DATA_DIR + "/" + this.getPrettyUrl(this.url) + "/" + this.getName();
+	}
 	private byte[] fetchAsBinary() {
+		System.err.println(url);
 		URL url;
 		try {
 			url = new URL(this.getUrl());
@@ -79,11 +89,15 @@ public abstract class Resource {
 		ByteArrayOutputStream os = null;
 		try {
 
-			/*HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			for(String header :con.getHeaderFields().keySet()){
-				System.out.println(header + ":"+ con.getHeaderField(header));
-			}*/
-			in = url.openStream();
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.connect();
+			
+			
+			if(con.getResponseCode() == 404){
+				return null;
+			}
+			updateUrl(con.getURL().toString());
+			in = con.getInputStream();
 			
 			BufferedInputStream bis = new BufferedInputStream(in);
 			
@@ -109,8 +123,12 @@ public abstract class Resource {
 	}
 
 	protected String fetchAsString() throws IOException {
-		System.err.println(this.getUrl());
-		String text = new String(this.fetchAsBinary());
+		
+		byte[] bytes = this.fetchAsBinary();
+		String text = null;
+		if(bytes != null){
+			text = new String(bytes);
+		}
 		
 		return text;
 	}
@@ -133,8 +151,13 @@ public abstract class Resource {
 		int start = 0;
 		if(url.contains("://")){
 			start = url.indexOf("://") + 3;
-		}else if(url.startsWith("/")){
-			start = 1;
+		}else if(url.startsWith("/") && this.getParent() != null){
+			try {
+				URL parentUrl = new URL(this.getParent().getUrl());
+				url = parentUrl.getHost() + url;
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		int end = url.lastIndexOf("/");
@@ -257,7 +280,7 @@ public abstract class Resource {
 		this.url = url;
 	}
 
-	public void addSubResoure(Resource subResource) {
+	public void addSubResource(Resource subResource) {
 		this.subResources.add(subResource);
 	}
 

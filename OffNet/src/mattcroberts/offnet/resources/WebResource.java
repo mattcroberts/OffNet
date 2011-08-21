@@ -46,8 +46,6 @@ public class WebResource extends Resource{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}else{
-				System.err.println("NONONOONO");
 			}
 			
 		}

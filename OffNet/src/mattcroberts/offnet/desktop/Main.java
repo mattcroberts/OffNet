@@ -29,8 +29,8 @@ public class Main implements PersistablePropertyHolder {
 			System.setProperty(name, value);
 		}
 		
-		String url = "http://www.vyre.com/";
-		singleUrlTest(url);
+		String url = "http://t.co/C4BgjqA";
+		//singleUrlTest(url);
 
 		twitterTest();
 		
@@ -68,7 +68,7 @@ public class Main implements PersistablePropertyHolder {
 			if(urls != null){
 				for(mattcroberts.gson.twitter.URL url:urls){
 					//System.out.println(url.getUrl());
-					Resource r = new WebResource(url.getUrl());
+					Resource r = new WebResource(url.getExpanded_url());
 
 					try {
 						r.persist();

@@ -13,20 +13,21 @@ public class CSSResource extends Resource {
 	public boolean persist()throws IOException{
 		File file = new File(this.getResourcePath());
 		
-		file.getParentFile().mkdirs();
-		
-		
 		String content = this.fetchAsString();
 		this.setContent(content);
 		this.analyse();
 		this.replaceURLs();
 			
-		FileWriter fw = new FileWriter(file);
+		if(content != null){
+			file.getParentFile().mkdirs();
+			FileWriter fw = new FileWriter(file);
+			
+			fw.write(this.getContent());
+			fw.close();
+			
+			this.persistSubResources();
+		}
 		
-		fw.write(this.getContent());
-		fw.close();
-		
-		this.persistSubResources();
 		return true;
 	}
 

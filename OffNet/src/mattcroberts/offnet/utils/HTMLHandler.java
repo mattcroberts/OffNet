@@ -39,11 +39,11 @@ public class HTMLHandler extends DefaultHandler{
 			return;
 		}else if(qName.equalsIgnoreCase("img")){
 			
-			this.resource.addSubResoure(new ImageResource(content, this.resource));
-		}else if(qName.equalsIgnoreCase("link")){
-			this.resource.addSubResoure(new CSSResource(content, this.resource));
+			this.resource.addSubResource(new ImageResource(content, this.resource));
+		}else if(qName.equalsIgnoreCase("link") && attributes.getValue("rel").equalsIgnoreCase("stylesheet")){
+			this.resource.addSubResource(new CSSResource(content, this.resource));
 		}else if(qName.equalsIgnoreCase("script")){
-			this.resource.addSubResoure(new ScriptResource(content, this.resource));
+			this.resource.addSubResource(new ScriptResource(content, this.resource));
 		}else if(qName.equalsIgnoreCase("a") && inceptionMode && Utils.isExternalResource(content, resource)){
 			
 			//Implement inception mode later
